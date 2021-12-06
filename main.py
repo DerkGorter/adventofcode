@@ -14,7 +14,7 @@ def main():
     sliding_window_size = 3
     depth_increments = submarine.determine_number_of_depth_increments(sliding_window_size)
 
-    print("Depth increments ", depth_increments, f" [slinding window size {sliding_window_size}]")
+    print("Depth increments ", depth_increments, f" [sliding window size {sliding_window_size}]")
 
 
 if __name__ == "__main__":
