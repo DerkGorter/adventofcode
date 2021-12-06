@@ -28,7 +28,7 @@ def day_2_dive_position_check(submarine, parser, file_name):
         submarine.update_position(direction, distance)
 
     print(submarine.get_position())
-    print('puzzle answer ' + str(submarine.position['horizontal'] * submarine.position['depth']))
+    print('puzzle answer ' + str(submarine.horizontal_position() * submarine.vertical_position()))
 
 
 if __name__ == "__main__":

@@ -4,10 +4,19 @@ import pandas as pd
 
 class Submarine:
     depth_scan_report = None
-    position = {'horizontal': 0, 'depth': 0}
+    position = {'horizontal': 0, 'depth': 0, 'aim': 0}
 
     def __init__(self):
         print("init submarine")
+
+    def horizontal_position(self):
+        return self.position['horizontal']
+
+    def vertical_position(self):
+        return self.position['depth']
+
+    def aim(self):
+        return self.position['aim']
 
     def get_depth_scan_results(self, scan_report: list) -> None:
         self.depth_scan_report = scan_report
@@ -41,13 +50,11 @@ class Submarine:
 
         return number_of_increments
 
-    def update_position(self, direction: str, distance: int) -> None:
-        if direction == 'vertical':
-            self.position['depth'] += distance
-        elif direction == 'horizontal':
-            self.position['horizontal'] += distance
-        else:
-            raise Exception(f'direction {direction} not implemented')
+    def update_position(self, update_type: str, value: int) -> None:
+        self.position[update_type] += value
+
+        if update_type == 'horizontal':
+            self.position['depth'] += value * self.position['aim']
 
     def get_position(self) -> str:
-        return f"Horizontal position {self.position['horizontal']}; Depth {self.position['depth']}"
+        return f"Horizontal position {self.horizontal_position()}; Depth {self.vertical_position()}"

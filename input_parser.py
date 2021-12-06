@@ -26,10 +26,10 @@ class InputParser:
     def convert_instruction(instruction: str):
         if 'up' in instruction:
             x = int(instruction.replace('up ', ''))
-            return 'vertical', -x
+            return 'aim', -x
         elif 'down' in instruction:
             x = int(instruction.replace('down ', ''))
-            return 'vertical', x
+            return 'aim', x
         elif 'forward' in instruction:
             x = int(instruction.replace('forward ', ''))
             return 'horizontal', x
