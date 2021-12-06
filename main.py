@@ -11,6 +11,7 @@ def main():
 
     day_1_depth_increment_assignment(submarine, parser, file_name="day_1_submarine.txt")
     day_2_dive_position_check(submarine, parser, file_name="day_2_dive.txt")
+    day_3_binary_diagnostics(submarine, parser, file_name="day_3_binary_diagnostic.txt")
 
 
 def day_1_depth_increment_assignment(submarine, parser, file_name):
@@ -29,6 +30,14 @@ def day_2_dive_position_check(submarine, parser, file_name):
 
     print(submarine.get_position())
     print('puzzle answer ' + str(submarine.horizontal_position() * submarine.vertical_position()))
+
+
+def day_3_binary_diagnostics(submarine, parser, file_name):
+    diagnostics_report = parser.read_txt_file(file_name)
+
+    submarine.read_diagnostics_report(diagnostics_report)
+    gamma, epsilon, power_consumption = submarine.process_diagnostics()
+    print(f"Power consumption {power_consumption}")
 
 
 if __name__ == "__main__":

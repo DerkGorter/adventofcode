@@ -4,6 +4,7 @@ import pandas as pd
 
 class Submarine:
     depth_scan_report = None
+    diagnostics_report = None
     position = {'horizontal': 0, 'depth': 0, 'aim': 0}
 
     def __init__(self):
@@ -58,3 +59,28 @@ class Submarine:
 
     def get_position(self) -> str:
         return f"Horizontal position {self.horizontal_position()}; Depth {self.vertical_position()}"
+
+    def read_diagnostics_report(self, report):
+        self.diagnostics_report = report
+
+    def process_diagnostics(self):
+        gamma_rate = self.diagnostics_gamma_rate(self.diagnostics_report)
+        epsilon_rate = self.invert_binary_number(gamma_rate)
+
+        return gamma_rate, epsilon_rate, int(gamma_rate,2) * int(epsilon_rate,2)
+
+    @staticmethod
+    def diagnostics_gamma_rate(diagnostics_report):
+        report = [list(x) for x in diagnostics_report]
+        df = pd.DataFrame(report).applymap(lambda x: int(x))
+        sums = np.array(df.sum())
+        test = sums > (len(report) / 2)
+        int_str_list = [str(int(x)) for x in test]
+        result = ''.join(int_str_list)
+        return result
+
+    @staticmethod
+    def invert_binary_number(binary_number: str):
+        temp = binary_number.replace('0', '_')
+        temp = temp.replace('1', '0')
+        return temp.replace('_', '1')
