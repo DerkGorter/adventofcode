@@ -2,52 +2,66 @@ import pandas as pd
 
 
 class BingoSimulator:
-    random_number_draw = None
-    bingo_boards = None
-    bingo_check_boards = None
+    _random_number_draw = None
+    _bingo_boards = None
+    _bingo_check_boards = None
+    _boards_with_bingo = []
+    _win_order_dict = {}
 
-    def __init__(self, random_number_draw, bingo_boards):
-        self.random_number_draw = random_number_draw
+    def __init__(self, random_number_draw: list, bingo_boards: dict) -> None:
+        self._random_number_draw = random_number_draw
+        self._bingo_boards = [pd.DataFrame(x) for x in bingo_boards.values()]
+        self._bingo_check_boards = [x.applymap(lambda x: int(0)) for x in self._bingo_boards]
 
-        bingo_boards = [pd.DataFrame(x) for x in bingo_boards.values()]
-        bingo_check_boards = [x.applymap(lambda x: int(0)) for x in bingo_boards]
-
-        self.bingo_boards = bingo_boards
-        self.bingo_check_boards = bingo_check_boards
-
-    def run(self):
-        win_order_dict = {}
+    def run(self) -> None:
+        # win number to keep track of when a bingo board wins
         win_number = 0
-        for number in self.random_number_draw:
-            for board_i in range(0, len(self.bingo_boards)):
 
-                boards_already_won = [tp[0] for tp in win_order_dict.values()]
-                if board_i in boards_already_won:
+        # call out numbers from the random number draw
+        for number in self._random_number_draw:
+
+            # mark the called out number on each board
+            for board_i in range(0, len(self._bingo_boards)):
+
+                # skip boards that have bingo
+                if self.board_has_bingo(board_i):
                     continue
 
-                board = self.bingo_boards[board_i]
-                bingo_check_board = self.bingo_check_boards[board_i]
+                # get current board and the corresponding marked numbers
+                board = self._bingo_boards[board_i]
+                bingo_check_board = self._bingo_check_boards[board_i]
 
-                number_check_df = board.isin([number]).applymap(lambda x: int(x))
-                self.bingo_check_boards[board_i] = bingo_check_board + number_check_df
+                # check if the called out number is on the bingo board, and mark the number
+                number_check = board.isin([number]).applymap(lambda x: int(x))
+                self._bingo_check_boards[board_i] = bingo_check_board + number_check
 
-                sum_rows = self.bingo_check_boards[board_i].sum(axis=0)
-                sum_cols = self.bingo_check_boards[board_i].sum(axis=1)
+                # determine the column and row sum of the markings
+                sum_rows = self._bingo_check_boards[board_i].sum(axis=0)
+                sum_cols = self._bingo_check_boards[board_i].sum(axis=1)
 
+                # if a row sum or column sum equals five, the board has bingo
                 if (5 in sum_rows.values) or (5 in sum_cols.values):
-                    win_order_dict[win_number] = (board_i, number)
+                    self._win_order_dict[win_number] = (board_i, number)
+                    self._boards_with_bingo.append(board_i)
                     win_number += 1
 
-        return win_order_dict
+    def board_has_bingo(self, board_i: int) -> bool:
+        return board_i in self._boards_with_bingo
 
-    def get_unmarked_number_sum(self, board_num):
-        winning_board = self.bingo_boards[board_num]
-        win_marked_numbers_int = self.bingo_check_boards[board_num]
+    def get_win_order(self) -> dict:
+        return self._win_order_dict
 
-        win_marked_numbers_int = win_marked_numbers_int.applymap(lambda x: not bool(x))
+    def get_bingo_board(self, board_num: int) -> pd.DataFrame:
+        return self._bingo_boards[board_num]
+
+    def get_unmarked_number_sum(self, board_num: int) -> int:
+        bingo_board = self._bingo_boards[board_num]
+        marked_numbers_int = self._bingo_check_boards[board_num]
+
+        marked_numbers_int = marked_numbers_int.applymap(lambda x: not bool(x))
 
         unmarked_sum = 0
-        for i in range(0, len(winning_board)):
-            unmarked_sum += winning_board[i][win_marked_numbers_int[i]].sum()
+        for i in range(0, len(bingo_board)):
+            unmarked_sum += bingo_board[i][marked_numbers_int[i]].sum()
 
         return unmarked_sum

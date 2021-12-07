@@ -4,7 +4,10 @@ from submarine import Submarine
 from input_parser import InputParser
 
 
-def main():
+def main() -> None:
+    """"
+    Run the adventofcode.com 2021 submarine
+    """
     input_file_path = os.getcwd() + "\\input_files\\"
     parser = InputParser(input_file_path=input_file_path)
     submarine = Submarine()
@@ -15,7 +18,7 @@ def main():
     day_4_bingo(submarine, parser, file_name="day_4_bingo.txt")
 
 
-def day_1_depth_increment_assignment(submarine, parser, file_name):
+def day_1_depth_increment_assignment(submarine: Submarine, parser: InputParser, file_name: str) -> None:
     int_depth_list = parser.parse_int_list_from_txt(file_name)
     submarine.get_depth_scan_results(int_depth_list)
     sliding_window_size = 3
@@ -23,17 +26,17 @@ def day_1_depth_increment_assignment(submarine, parser, file_name):
     print("Depth increments ", depth_increments, f" [sliding window size {sliding_window_size}]")
 
 
-def day_2_dive_position_check(submarine, parser, file_name):
-    instructions = parser.parse_instructions(file_name)
+def day_2_dive_position_check(submarine: Submarine, parser: InputParser, file_name: str) -> None:
+    instructions = parser.parse_movement_instructions(file_name)
 
-    for direction, distance in instructions:
-        submarine.update_position(direction, distance)
+    for update_type, value in instructions:
+        submarine.update_position(update_type, value)
 
     print(submarine.get_position())
     print('puzzle answer ' + str(submarine.horizontal_position() * submarine.vertical_position()))
 
 
-def day_3_binary_diagnostics(submarine, parser, file_name):
+def day_3_binary_diagnostics(submarine: Submarine, parser: InputParser, file_name: str) -> None:
     diagnostics_report = parser.read_txt_file(file_name)
 
     submarine.read_diagnostics_report(diagnostics_report)
@@ -43,7 +46,7 @@ def day_3_binary_diagnostics(submarine, parser, file_name):
     print(f"Life support rating {int(oxygen, 2) * int(co2, 2)}")
 
 
-def day_4_bingo(submarine, parser, file_name):
+def day_4_bingo(submarine: Submarine, parser: InputParser, file_name: str) -> None:
     random_draw, boards = parser.read_bingo_input(file_name)
     win_info, loss_info = submarine.bingo_simulation(random_draw, boards)
 
