@@ -36,8 +36,9 @@ def day_3_binary_diagnostics(submarine, parser, file_name):
     diagnostics_report = parser.read_txt_file(file_name)
 
     submarine.read_diagnostics_report(diagnostics_report)
-    gamma, epsilon, power_consumption = submarine.process_diagnostics()
-    print(f"Power consumption {power_consumption}")
+    gamma, epsilon, oxygen, co2 = submarine.process_diagnostics()
+    print(f"Power consumption {int(gamma, 2) * int(epsilon, 2)}")
+    print(f"Life support rating {int(oxygen, 2) * int(co2, 2)}")
 
 
 if __name__ == "__main__":
