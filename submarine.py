@@ -1,10 +1,13 @@
 import numpy as np
 import pandas as pd
 
+from sub_diagnostics import SubmarineDiagnosticsHelper
+from sub_bingo import BingoSimulator
+
 
 class Submarine:
     depth_scan_report = None
-    diagnostics_report = None
+    diagnostics_helper = SubmarineDiagnosticsHelper()
     position = {'horizontal': 0, 'depth': 0, 'aim': 0}
 
     def __init__(self):
@@ -61,68 +64,23 @@ class Submarine:
         return f"Horizontal position {self.horizontal_position()}; Depth {self.vertical_position()}"
 
     def read_diagnostics_report(self, report):
-        self.diagnostics_report = report
+        self.diagnostics_helper.read_diagnostics_report(report)
 
     def process_diagnostics(self):
-        gamma_rate = self.diagnostics_gamma_rate(self.diagnostics_report)
-        epsilon_rate = self.invert_binary_number(gamma_rate)
-        oxygen_generator_rating = self.diagnostics_life_support(self.diagnostics_report, support_type="oxygen")
-        co2_scrubber_rating = self.diagnostics_life_support(self.diagnostics_report, support_type="co2")
-
-        return gamma_rate, epsilon_rate, oxygen_generator_rating, co2_scrubber_rating
+        return self.diagnostics_helper.process_diagnostics()
 
     @staticmethod
-    def diagnostics_gamma_rate(diagnostics_report):
-        diagnostics_df = Submarine.diagnostics_report_to_df(diagnostics_report)
-        sums = np.array(diagnostics_df.sum())
-        binary_as_array = sums > (len(diagnostics_df) / 2)
-        return Submarine.binary_array_to_string(binary_as_array)
+    def bingo_simulation(random_number_draw, bingo_boards):
+        bingo_sim = BingoSimulator(random_number_draw, bingo_boards)
+        win_order_dict = bingo_sim.run()
 
-    @staticmethod
-    def binary_array_to_string(binary_as_array):
-        int_str_list = [str(int(x)) for x in binary_as_array]
-        return ''.join(int_str_list)
+        winning_board_num, final_number_win = win_order_dict[0]
+        winning_board = bingo_sim.bingo_boards[winning_board_num]
+        win_unmarked_sum = bingo_sim.get_unmarked_number_sum(winning_board_num)
 
-    @staticmethod
-    def diagnostics_life_support(diagnostics_report, support_type):
-        diagnostics_df = Submarine.diagnostics_report_to_df(diagnostics_report)
-        selection = diagnostics_df.copy()
+        losing_board_num, final_number_lose = win_order_dict[len(win_order_dict) - 1]
+        losing_board = bingo_sim.bingo_boards[losing_board_num]
+        loss_unmarked_sum = bingo_sim.get_unmarked_number_sum(losing_board_num)
 
-        binary_number_total = len(diagnostics_df)
+        return (winning_board, final_number_win, win_unmarked_sum), (losing_board, final_number_lose, loss_unmarked_sum)
 
-        i = 0
-        bit_num = 0
-        while len(selection) > 1 and i < binary_number_total:
-            bit_values = selection.iloc[:, bit_num]
-            remaining_number = len(selection)
-            bit_sum = sum(bit_values)
-
-            if support_type == "oxygen":
-                selection_bit = int(bit_sum >= (remaining_number / 2))
-            elif support_type == "co2":
-                selection_bit = int(bit_sum < (remaining_number / 2))
-            else:
-                raise Exception(f'support type {support_type} not implemented')
-
-            selection = selection[selection.iloc[:, bit_num] == selection_bit]
-
-            bit_num += 1
-            i += 1
-
-        if len(selection) > 1:
-            raise Exception('more than one binary number left')
-
-        binary_as_array = np.array(selection.iloc[0])
-        binary_as_str = Submarine.binary_array_to_string(binary_as_array)
-        return binary_as_str
-
-    @staticmethod
-    def diagnostics_report_to_df(diagnostics_report):
-        report = [list(x) for x in diagnostics_report]
-        return pd.DataFrame(report).applymap(lambda x: int(x))
-
-    @staticmethod
-    def invert_binary_number(binary_number: str):
-        temp = binary_number.replace('0', '_')
-        temp = temp.replace('1', '0')
-        return temp.replace('_', '1')
