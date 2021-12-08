@@ -3,12 +3,15 @@ import pandas as pd
 
 from sub_diagnostics import SubmarineDiagnosticsHelper
 from sub_bingo import BingoSimulator
+from grid_utils.line import Line
+from grid_utils.grid import Grid
 
 
 class Submarine:
     _depth_scan_report = None
     _diagnostics_helper = SubmarineDiagnosticsHelper()
     _position = {'horizontal': 0, 'depth': 0, 'aim': 0}
+    _hydrothermal_lines = None
 
     def __init__(self):
         print("init submarine")
@@ -87,4 +90,22 @@ class Submarine:
         loss_unmarked_sum = bingo_sim.get_unmarked_number_sum(losing_board_num)
 
         return (winning_board, final_number_win, win_unmarked_sum), (losing_board, final_number_lose, loss_unmarked_sum)
+
+    def scan_hydrothermal_lines(self, hydrothermal_lines):
+        self._hydrothermal_lines = hydrothermal_lines
+
+    def determine_hydrothermal_danger_zones(self):
+        lines_hz = Line.select_horizontal_and_vertical_lines(self._hydrothermal_lines)
+        min_x, max_x, min_y, max_y = Grid.determine_grid_size_from_lines(lines_hz)
+        grid = Grid(min_x, max_x, min_y, max_y, initial_value=0)
+        grid.plot_lines(lines_hz)
+        number_of_danger_zones_hz = grid.determine_danger_zones()
+
+        min_x, max_x, min_y, max_y = Grid.determine_grid_size_from_lines(self._hydrothermal_lines)
+        grid2 = Grid(min_x, max_x, min_y, max_y, initial_value=0)
+        grid2.plot_lines(self._hydrothermal_lines)
+        number_of_danger_zones = grid2.determine_danger_zones()
+
+        return number_of_danger_zones_hz, number_of_danger_zones
+
 

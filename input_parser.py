@@ -61,3 +61,7 @@ class InputParser:
         values = ' '.join(values)
         int_values = [int(x) for x in values.split(sep=' ')]
         return int_values
+
+    def parse_line_segments(self, file_name):
+        raw_line_segments = self.read_txt_file(file_name)
+        return [sub_utils.convert_line_segemnt_str_to_line(x) for x in raw_line_segments]

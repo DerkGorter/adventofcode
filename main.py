@@ -16,6 +16,7 @@ def main() -> None:
     day_2_dive_position_check(submarine, parser, file_name="day_2_dive.txt")
     day_3_binary_diagnostics(submarine, parser, file_name="day_3_binary_diagnostic.txt")
     day_4_bingo(submarine, parser, file_name="day_4_bingo.txt")
+    day_5_hydrothermal_venture(submarine, parser, file_name="day_5_hydrothermal_venture.txt")
 
 
 def day_1_depth_increment_assignment(submarine: Submarine, parser: InputParser, file_name: str) -> None:
@@ -57,6 +58,14 @@ def day_4_bingo(submarine: Submarine, parser: InputParser, file_name: str) -> No
     losing_board, final_number_lose, loss_unmarked_sum = loss_info
     print("losing_board:\n", losing_board, "\n\n final number: ", final_number_lose, "\n unmarked sum: ", loss_unmarked_sum)
     print("puzzle part two answer ", str(loss_unmarked_sum * final_number_lose))
+
+
+def day_5_hydrothermal_venture(submarine: Submarine, parser: InputParser, file_name: str) -> None:
+    hydrothermal_lines = parser.parse_line_segments(file_name)
+    submarine.scan_hydrothermal_lines(hydrothermal_lines)
+    horizontal_and_vertical_danger_zones, total_danger_zones = submarine.determine_hydrothermal_danger_zones()
+    print(f"danger zones horizontal/vertical: {horizontal_and_vertical_danger_zones}")
+    print(f" total danger zones: {total_danger_zones}")
 
 
 if __name__ == "__main__":
