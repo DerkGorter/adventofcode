@@ -1,11 +1,11 @@
 import numpy as np
 import pandas as pd
 
-from sub_diagnostics import SubmarineDiagnosticsHelper
-from sub_bingo import BingoSimulator
-from grid_utils.line import Line
-from grid_utils.grid import Grid
-from lanternfish import LanternfishSchool
+from sub_toolbox.sub_diagnostics import SubmarineDiagnosticsHelper
+from sub_games.sub_bingo import BingoSimulator
+from sub_toolbox.grid_utils.line import Line
+from sub_toolbox.grid_utils.grid import Grid
+from ocean_life_forms.lanternfish_school import LanternfishSchool
 
 
 class Submarine:

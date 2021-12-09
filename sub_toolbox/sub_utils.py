@@ -1,5 +1,5 @@
-from grid_utils.line import Line
-from grid_utils.point import Point
+from sub_toolbox.grid_utils.line import Line
+from sub_toolbox.grid_utils.point import Point
 
 
 def convert_movement_instruction(instruction: str) -> tuple:

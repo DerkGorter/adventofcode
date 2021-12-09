@@ -1,4 +1,4 @@
-from grid_utils.point import Point
+from sub_toolbox.grid_utils.point import Point
 
 
 class Line:

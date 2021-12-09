@@ -1,4 +1,4 @@
-import sub_utils
+from sub_toolbox import sub_utils
 from unittest import TestCase
 from submarine import Submarine
 
@@ -126,3 +126,16 @@ class SubmarineTesting(TestCase):
         test_result_1 = submarine.determine_lowest_fuel_costs_to_align_crab_positions(test_input)
         test_result_2 = submarine.determine_lowest_fuel_costs_to_align_crab_positions(test_input, fuel_costs_non_linear=True)
         self.assertEqual((test_result_1, test_result_2), expected_result)
+
+    def test_day_8_seven_segment_search(self):
+        test_input = ['be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe',
+                        'edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc',
+                        'fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg',
+                        'fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb',
+                        'aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | gecf egdcabf bgf bfgea',
+                        'fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | gebdcfa ecba ca fadegcb',
+                        'dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbcadfe',
+                        'bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef',
+                        'egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb',
+                        'gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce']
+        self.assertEqual(1, 1)
