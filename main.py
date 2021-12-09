@@ -18,6 +18,7 @@ def main() -> None:
     day_4_bingo(submarine, parser, file_name="day_4_bingo.txt")
     day_5_hydrothermal_venture(submarine, parser, file_name="day_5_hydrothermal_venture.txt")
     day_6_lanternfish(submarine, parser, file_name="day_6_lanternfish.txt")
+    day_7_treachery_of_whales(submarine, parser, file_name="day_7_treachery_of_whales.txt")
 
 
 def day_1_depth_increment_assignment(submarine: Submarine, parser: InputParser, file_name: str) -> None:
@@ -74,6 +75,14 @@ def day_6_lanternfish(submarine: Submarine, parser: InputParser, file_name: str)
     days = 256
     number_of_fish = submarine.lanternfish_simulation(lanternfish_initial_states, days=days)
     print(f"after {days} days there are {number_of_fish} lanternfish")
+
+
+def day_7_treachery_of_whales(submarine: Submarine, parser: InputParser, file_name: str) -> None:
+    crab_positions = parser.parse_int_list_from_single_string(file_name)
+    fuel_cost = submarine.determine_lowest_fuel_costs_to_align_crab_positions(crab_positions)
+    fuel_cost_non_linear = submarine.determine_lowest_fuel_costs_to_align_crab_positions(crab_positions, fuel_costs_non_linear=True)
+    print('crab alignment fuel costs ', fuel_cost)
+    print('crab alignment non linear fuel costs', fuel_cost_non_linear)
 
 
 if __name__ == "__main__":

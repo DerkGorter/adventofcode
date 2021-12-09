@@ -117,3 +117,21 @@ class Submarine:
         total_fish = lantern_fish_school.get_total_fish_amount()
 
         return total_fish
+
+    @staticmethod
+    def determine_lowest_fuel_costs_to_align_crab_positions(crab_positions, fuel_costs_non_linear=False):
+        alignment_options = np.array(list(range(min(crab_positions), max(crab_positions)+1)))
+        alignment_matrix = np.array([alignment_options for i in range(0, len(crab_positions))]).transpose()
+
+        costs = abs(alignment_matrix - crab_positions)
+
+        if fuel_costs_non_linear:
+            linear_fuel_values = np.unique(costs)
+
+            # reverse the order to avoid overwriting higher linear costs
+            for x in linear_fuel_values[::-1]:
+                costs[costs == x] = sum((range(0, x+1)))
+
+        lowest_cost = min(costs.sum(axis=1))
+
+        return lowest_cost

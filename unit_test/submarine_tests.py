@@ -119,3 +119,10 @@ class SubmarineTesting(TestCase):
         expected_result = 26
         test_result = submarine.lanternfish_simulation(test_input, 18)
         self.assertEqual(test_result, expected_result)
+
+    def test_day_7_treachery_of_whales(self):
+        test_input = [16, 1, 2, 0, 4, 2, 7, 1, 2, 14]
+        expected_result = (37, 168)
+        test_result_1 = submarine.determine_lowest_fuel_costs_to_align_crab_positions(test_input)
+        test_result_2 = submarine.determine_lowest_fuel_costs_to_align_crab_positions(test_input, fuel_costs_non_linear=True)
+        self.assertEqual((test_result_1, test_result_2), expected_result)
