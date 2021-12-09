@@ -21,6 +21,12 @@ class InputParser:
         int_list = [int(s) for s in str_list]
         return int_list
 
+    def parse_int_list_from_single_string(self, file_name):
+        string_of_ints = self.read_txt_file(file_name)
+        int_list = [int(s) for s in string_of_ints[0].split(',')]
+        return int_list
+
+
     def parse_movement_instructions(self, file_name):
         str_instructions = self.read_txt_file(file_name)
         return [sub_utils.convert_movement_instruction(s) for s in str_instructions]

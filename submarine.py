@@ -5,6 +5,7 @@ from sub_diagnostics import SubmarineDiagnosticsHelper
 from sub_bingo import BingoSimulator
 from grid_utils.line import Line
 from grid_utils.grid import Grid
+from lanternfish import LanternfishSchool
 
 
 class Submarine:
@@ -108,4 +109,11 @@ class Submarine:
 
         return number_of_danger_zones_hz, number_of_danger_zones
 
+    @staticmethod
+    def lanternfish_simulation(fish_states, days):
 
+        lantern_fish_school = LanternfishSchool(np.array(fish_states))
+        lantern_fish_school.run_school_simulation(days)
+        total_fish = lantern_fish_school.get_total_fish_amount()
+
+        return total_fish

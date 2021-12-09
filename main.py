@@ -17,6 +17,7 @@ def main() -> None:
     day_3_binary_diagnostics(submarine, parser, file_name="day_3_binary_diagnostic.txt")
     day_4_bingo(submarine, parser, file_name="day_4_bingo.txt")
     day_5_hydrothermal_venture(submarine, parser, file_name="day_5_hydrothermal_venture.txt")
+    day_6_lanternfish(submarine, parser, file_name="day_6_lanternfish.txt")
 
 
 def day_1_depth_increment_assignment(submarine: Submarine, parser: InputParser, file_name: str) -> None:
@@ -66,6 +67,13 @@ def day_5_hydrothermal_venture(submarine: Submarine, parser: InputParser, file_n
     horizontal_and_vertical_danger_zones, total_danger_zones = submarine.determine_hydrothermal_danger_zones()
     print(f"danger zones horizontal/vertical: {horizontal_and_vertical_danger_zones}")
     print(f" total danger zones: {total_danger_zones}")
+
+
+def day_6_lanternfish(submarine: Submarine, parser: InputParser, file_name: str) -> None:
+    lanternfish_initial_states = parser.parse_int_list_from_single_string(file_name)
+    days = 256
+    number_of_fish = submarine.lanternfish_simulation(lanternfish_initial_states, days=days)
+    print(f"after {days} days there are {number_of_fish} lanternfish")
 
 
 if __name__ == "__main__":

@@ -113,3 +113,9 @@ class SubmarineTesting(TestCase):
         test_result = submarine.determine_hydrothermal_danger_zones()
 
         self.assertEqual(test_result, expected_result)
+
+    def test_laternfish_sim(self):
+        test_input = [3, 4, 3, 1, 2]
+        expected_result = 26
+        test_result = submarine.lanternfish_simulation(test_input, 18)
+        self.assertEqual(test_result, expected_result)
