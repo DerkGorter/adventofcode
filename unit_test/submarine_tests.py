@@ -26,7 +26,7 @@ class SubmarineTesting(TestCase):
 
     def test_movement(self):
         test_input = ['forward 5', 'down 5', 'forward 8', 'up 3', 'down 8', 'forward 2']
-        expected_result = "Horizontal position 15; Depth 60"
+        expected_result = (15, 60)
 
         submarine.reset_position()
 
