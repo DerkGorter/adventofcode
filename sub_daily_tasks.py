@@ -1,5 +1,5 @@
 from submarine import Submarine
-from sub_toolbox.input_parser import InputParser
+from input.input_parser import InputParser
 
 
 def day_1_depth_increment_assignment(submarine: Submarine, parser: InputParser, file_name: str) -> None:

@@ -13,7 +13,7 @@ class InputParser:
         with open(file) as f:
             lines = f.readlines()
 
-        lines = [l.strip() for l in lines]
+        lines = [line.strip() for line in lines]
         return lines
 
     def parse_int_list_from_txt(self, file_name):
@@ -25,7 +25,6 @@ class InputParser:
         string_of_ints = self.read_txt_file(file_name)
         int_list = [int(s) for s in string_of_ints[0].split(',')]
         return int_list
-
 
     def parse_movement_instructions(self, file_name):
         str_instructions = self.read_txt_file(file_name)

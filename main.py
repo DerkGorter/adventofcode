@@ -6,7 +6,7 @@ def main() -> None:
     """"
     Run the adventofcode.com 2021 submarine
     """
-    input_file_path = os.getcwd() + "\\input_files\\"
+    input_file_path = os.getcwd() + "\\input\\input_data\\"
     parser = InputParser(input_file_path=input_file_path)
     submarine = Submarine()
 
