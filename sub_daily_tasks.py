@@ -16,8 +16,10 @@ def day_2_dive_position_check(submarine: Submarine, parser: InputParser, file_na
     for update_type, value in instructions:
         submarine.update_position(update_type, value)
 
-    print(submarine.get_position())
-    print('puzzle answer ' + str(submarine.horizontal_position() * submarine.vertical_position()))
+    horizontal_position, vertical_position = submarine.get_position()
+
+    print(f"Horizontal position {horizontal_position}; Depth {vertical_position}")
+    print('Day 2 daily taks answer ' + str(submarine.horizontal_position() * submarine.vertical_position()))
 
 
 def day_3_binary_diagnostics(submarine: Submarine, parser: InputParser, file_name: str) -> None:
@@ -48,7 +50,10 @@ def day_4_bingo(submarine: Submarine, parser: InputParser, file_name: str) -> No
 def day_5_hydrothermal_venture(submarine: Submarine, parser: InputParser, file_name: str) -> None:
     hydrothermal_lines = parser.parse_line_segments(file_name)
     submarine.scan_hydrothermal_lines(hydrothermal_lines)
-    horizontal_and_vertical_danger_zones, total_danger_zones = submarine.determine_hydrothermal_danger_zones()
+
+    horizontal_and_vertical_danger_zones= submarine.determine_hydrothermal_danger_zones(only_hz=True)
+    total_danger_zones = submarine.determine_hydrothermal_danger_zones(only_hz=False)
+
     print(f"danger zones horizontal/vertical: {horizontal_and_vertical_danger_zones}")
     print(f" total danger zones: {total_danger_zones}")
 

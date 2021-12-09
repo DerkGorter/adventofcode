@@ -110,9 +110,10 @@ class SubmarineTesting(TestCase):
         lines = [sub_utils.convert_line_segemnt_str_to_line(x) for x in test_input]
 
         submarine.scan_hydrothermal_lines(lines)
-        test_result = submarine.determine_hydrothermal_danger_zones()
+        test_result_hz = submarine.determine_hydrothermal_danger_zones(only_hz=True)
+        test_result_all = submarine.determine_hydrothermal_danger_zones(only_hz=False)
 
-        self.assertEqual(test_result, expected_result)
+        self.assertEqual((test_result_hz, test_result_all), expected_result)
 
     def test_laternfish_sim(self):
         test_input = [3, 4, 3, 1, 2]
