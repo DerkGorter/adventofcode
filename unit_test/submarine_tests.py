@@ -139,4 +139,12 @@ class SubmarineTesting(TestCase):
                         'bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef',
                         'egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb',
                         'gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce']
-        self.assertEqual(1, 1)
+
+        submarine.parse__display_signals_to_signal_analyzer(test_input)
+        submarine.run_display_signal_analysis()
+        result = submarine._signal_analyzer.get_unique_pattern_count()
+
+        out_signals = [t.split('|')[1] for t in test_input]
+        test_result = submarine.count_digits_with_unique_signal_length(out_signals)
+
+        self.assertEqual(test_result, 26)

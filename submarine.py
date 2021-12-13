@@ -5,6 +5,7 @@ from sub_toolbox.sub_diagnostics import SubmarineDiagnosticsHelper
 from sub_games.sub_bingo import BingoSimulator
 from sub_toolbox.grid_utils.line import Line
 from sub_toolbox.grid_utils.grid import Grid
+from sub_toolbox.sub_display_signal_analyzer import DisplaySignalAnalyzer
 from ocean_life_forms.lanternfish_school import LanternfishSchool
 
 
@@ -19,6 +20,7 @@ class Submarine:
     _depth_scan_report = None
     _hydrothermal_lines = None
     _diagnostics_helper = SubmarineDiagnosticsHelper()
+    _signal_analyzer = DisplaySignalAnalyzer()
     _position = {'horizontal': 0, 'depth': 0, 'aim': 0}
 
     def __init__(self):
@@ -184,7 +186,7 @@ class Submarine:
         :param fish_states: a list of int with the initial states
         :param days: int number of days to run the simulation
         """
-        lantern_fish_school = LanternfishSchool(np.array(fish_states))
+        lantern_fish_school = LanternfishSchool(np.array(fish_states), min_state=0, max_state=8)
         lantern_fish_school.run_school_simulation(days)
         total_fish = lantern_fish_school.get_total_fish_amount()
 
@@ -218,3 +220,19 @@ class Submarine:
         lowest_cost = min(costs.sum(axis=1))
 
         return lowest_cost
+
+    def parse__display_signals_to_signal_analyzer(self, signals: list) -> None:
+        """"Parse raw signal analysis data to the signal alalyzer class"""
+        self._signal_analyzer.read_signals(signals)
+
+    def run_display_signal_analysis(self) -> None:
+        """"run the display signal analysis"""
+        self._signal_analyzer.prepare_signal_data()
+        self._signal_analyzer.count_unique_patterns_in_output_signals()
+        self._signal_analyzer.decode_four_digit_output_values()
+
+    def print_display_signal_analysis_results(self):
+        """"Print the results of the display signal analysis"""
+        print("DISPLAY SIGNAL ANALYSIS:")
+        print(f"Count of unique length signals: {self._signal_analyzer.get_unique_pattern_count()}")
+        print(f"Count of unique length signals: {sum(self._signal_analyzer.get_decoded_output())}")

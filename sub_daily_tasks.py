@@ -51,7 +51,7 @@ def day_5_hydrothermal_venture(submarine: Submarine, parser: InputParser, file_n
     hydrothermal_lines = parser.parse_line_segments(file_name)
     submarine.scan_hydrothermal_lines(hydrothermal_lines)
 
-    horizontal_and_vertical_danger_zones= submarine.determine_hydrothermal_danger_zones(only_hz=True)
+    horizontal_and_vertical_danger_zones = submarine.determine_hydrothermal_danger_zones(only_hz=True)
     total_danger_zones = submarine.determine_hydrothermal_danger_zones(only_hz=False)
 
     print(f"danger zones horizontal/vertical: {horizontal_and_vertical_danger_zones}")
@@ -78,4 +78,8 @@ def day_7_treachery_of_whales(submarine: Submarine, parser: InputParser, file_na
 
 
 def day_8_seven_segment_search(submarine: Submarine, parser: InputParser, file_name: str) -> None:
-    print("dingen")
+    signals = parser.read_txt_file(file_name)
+
+    submarine.parse__display_signals_to_signal_analyzer(signals)
+    submarine.run_display_signal_analysis()
+    submarine.print_display_signal_analysis_results()
