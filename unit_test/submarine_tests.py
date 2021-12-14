@@ -143,8 +143,6 @@ class SubmarineTesting(TestCase):
         submarine.parse__display_signals_to_signal_analyzer(test_input)
         submarine.run_display_signal_analysis()
         result = submarine._signal_analyzer.get_unique_pattern_count()
+        result2 = submarine._signal_analyzer.get_decoded_output_sum()
 
-        out_signals = [t.split('|')[1] for t in test_input]
-        test_result = submarine.count_digits_with_unique_signal_length(out_signals)
-
-        self.assertEqual(test_result, 26)
+        self.assertEqual((result, result2), (26, 61229))

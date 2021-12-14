@@ -235,4 +235,4 @@ class Submarine:
         """"Print the results of the display signal analysis"""
         print("DISPLAY SIGNAL ANALYSIS:")
         print(f"Count of unique length signals: {self._signal_analyzer.get_unique_pattern_count()}")
-        print(f"Count of unique length signals: {sum(self._signal_analyzer.get_decoded_output())}")
+        print(f"Count of unique length signals: {self._signal_analyzer.get_decoded_output_sum()}")

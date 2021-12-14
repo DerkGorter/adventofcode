@@ -38,10 +38,7 @@ class DisplaySignalAnalyzer:
         return sum([len(single_digit_signal) in [2, 3, 4, 7] for single_digit_signal in signal])
 
     def get_decoded_output_sum(self):
-        output_sum = 0
-        for output_values in self._decoded_output:
-            output_sum += sum(output_values)
-        return output_sum
+        return sum(self._decoded_output)
 
     def decode_four_digit_output_values(self) -> None:
         self.determine_signal_mappings()
@@ -49,35 +46,66 @@ class DisplaySignalAnalyzer:
 
     def determine_signal_mappings(self):
         for test_signals in self._test_signals_list:
-            self._signal_mappers.append(self.get_signal_mapper_for_signal(test_signals))
+            self.get_signal_mapper_for_signal(test_signals)
 
     def get_signal_mapper_for_signal(self, test_signals):
         mapping = {}
+
+        one_signal = None
+        four_signal = None
+        seven_signal = None
+
+        sorted_signals_hold = []
+
         for test_signal in test_signals:
-            one_signal = None
-            four_signal = None
-            seven_signal = None
-            signal_length = len(test_signal)
+            sorted_signal = self.sorted_signal(test_signal)
+
+            signal_length = len(sorted_signal)
 
             if signal_length == 2:
-                mapping[test_signal] = 1
+                mapping[sorted_signal] = 1
                 one_signal = test_signal
             elif signal_length == 3:
-                mapping[test_signal] = 7
+                mapping[sorted_signal] = 7
                 seven_signal = test_signal
             elif signal_length == 4:
-                mapping[test_signal] = 4
+                mapping[sorted_signal] = 4
                 four_signal = test_signal
             elif signal_length == 7:
-                mapping[test_signal] = 8
+                mapping[sorted_signal] = 8
+            else:
+                sorted_signals_hold.append(sorted_signal)
 
-            # todo: fix mapping for other numbers
+        two_five_differentiator = [c for c in four_signal if c not in one_signal]
 
-            self._signal_mappers.append(mapping)
+        for sorted_test_signal in sorted_signals_hold:
+            signal_length = len(sorted_test_signal)
+
+            if signal_length == 6:
+                if all([c in sorted_test_signal for c in four_signal]):
+                    mapping[sorted_test_signal] = 9
+                elif all([c in sorted_test_signal for c in seven_signal]):
+                    mapping[sorted_test_signal] = 0
+                else:
+                    mapping[sorted_test_signal] = 6
+
+            if signal_length == 5:
+                if all([c in sorted_test_signal for c in seven_signal]):
+                    mapping[sorted_test_signal] = 3
+                elif all([c in sorted_test_signal for c in two_five_differentiator]):
+                    mapping[sorted_test_signal] = 5
+                else:
+                    mapping[sorted_test_signal] = 2
+
+        self._signal_mappers.append(mapping)
+
+    @staticmethod
+    def sorted_signal(signal):
+        return "".join(sorted(signal))
 
     def decode_output_signals(self):
         for i in range(0, len(self._output_display_signals)):
             mapper = self._signal_mappers[i]
             display_signals = self._output_display_signals[i]
-            decoded_signals = [mapper[signal] for signal in display_signals]
-            self._decoded_output.append(decoded_signals)
+            decoded_signals = [str(mapper[self.sorted_signal(signal)]) for signal in display_signals]
+            self._decoded_output.append(int(''.join(decoded_signals)))
